@@ -59,13 +59,15 @@ export const roles: Role[] = [
     highlights: [
       "Python tools to process, visualize and validate optical measurement data, used to guide design decisions",
       "Characterized material behaviour (fluorescence, thermal) and used the data to optimize the system design",
-      "Mechanical design of the optical assembly in CAD, from model to 3D-printed prototype",
+      "Designed the physical projector in CAD — lens-array holder, light-source mount and full optical assembly — through to a 3D-printed prototype",
     ],
     tech: ["Python", "NumPy", "Matplotlib", "CAD", "Optics"],
     images: [
       "/images/bosch/projection.jpg",
       "/images/bosch/spectra.jpg",
       "/images/bosch/cad.jpg",
+      "/images/bosch/cad-lens-holder.jpg",
+      "/images/bosch/cad-mount.jpg",
       "/images/bosch/prototype.jpg",
     ],
   },

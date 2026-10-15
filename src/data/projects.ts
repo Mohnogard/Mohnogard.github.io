@@ -114,8 +114,8 @@ export const experiments: Experiment[] = [
     track: "mechatronics",
     name: "Chrome Dino Auto-Player",
     description:
-      "A physical bot that plays the Chrome offline dinosaur game on its own — a light sensor taped to the screen spots incoming obstacles, and an Arduino drives a servo arm that presses the spacebar to jump.",
-    tech: ["Arduino", "C++", "Sensors", "Servo control"],
+      "A physical bot that plays the Chrome offline dinosaur game on its own — an LDR (light sensor) on the screen spots incoming obstacles, and an Arduino drives a servo on the spacebar to jump.",
+    tech: ["Arduino", "C++", "LDR sensor", "Servo control"],
     images: ["/images/experiments/dino.mp4"],
   },
 ];

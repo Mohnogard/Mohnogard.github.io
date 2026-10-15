@@ -1,6 +1,8 @@
 // Point this at wherever the CV lives. A file in public/cv/ works as-is;
 // a full URL (Google Drive, Dropbox, ...) works too — just paste it here.
-export const CV_URL = `${import.meta.env.BASE_URL}cv/Mohammad_Ishaqat_CV.pdf`;
+// The ?v= stamp changes on every build, so browsers fetch a freshly replaced
+// CV instead of showing a cached copy.
+export const CV_URL = `${import.meta.env.BASE_URL}cv/Mohammad_Ishaqat_CV.pdf?v=${__BUILD_ID__}`;
 
 export const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"] as const;
 
