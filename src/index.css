@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg: #0a0e17;
+  --color-bg-soft: #0f1522;
+  --color-surface: #131a2a;
+  --color-border: #22304a;
+  --color-text: #e7ecf5;
+  --color-text-muted: #94a3bb;
+  --color-accent: #5eead4;
+  --color-accent-soft: #2dd4bf;
+  --color-accent2: #818cf8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: #0a0e17;
+}
+
+.text-gradient {
+  background-image: linear-gradient(90deg, var(--color-accent), var(--color-accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-border {
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* No transform on hover: shifting the card moved its edge out from under a
+   resting cursor, which un-hovered it, which moved it back — an endless flicker. */
+.glow-border:hover {
+  border-color: var(--color-accent-soft);
+  box-shadow: 0 10px 30px -10px rgba(45, 212, 191, 0.25);
+}
+
+/* ---------- Animated background ---------- */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 187, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 187, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* Performance: the glows are soft radial gradients rather than blurred circles.
+   A CSS blur filter on a screen-sized element is re-rendered every animation
+   frame; a gradient is painted once and the GPU only moves it (transform). */
+.bg-blob {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 9999px;
+  will-change: transform;
+}
+.bg-blob-1 { background: radial-gradient(closest-side, rgba(94, 234, 212, 0.14), transparent); top: -30vmax; left: -22vmax; animation: drift-1 26s ease-in-out infinite alternate; }
+.bg-blob-2 { background: radial-gradient(closest-side, rgba(129, 140, 248, 0.14), transparent); top: 20vh; right: -30vmax; animation: drift-2 32s ease-in-out infinite alternate; }
+.bg-blob-3 { background: radial-gradient(closest-side, rgba(56, 189, 248, 0.09), transparent); bottom: -36vmax; left: 15vw; animation: drift-3 38s ease-in-out infinite alternate; }
+
+@keyframes drift-1 { to { transform: translate3d(18vw, 22vh, 0) scale(1.15); } }
+@keyframes drift-2 { to { transform: translate3d(-22vw, -12vh, 0) scale(0.9); } }
+@keyframes drift-3 { to { transform: translate3d(-16vw, -20vh, 0) scale(1.2); } }
+
+/* ---------- Cursor spotlight on cards ---------- */
+.glow-border {
+  position: relative;
+  isolation: isolate;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(94, 234, 212, 0.09),
+    transparent 60%
+  );
+}
+.glow-border:hover::before { opacity: 1; }
+
+/* ---------- Scroll reveal ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Hero ---------- */
+.text-gradient-animated {
+  background-image: linear-gradient(90deg, var(--color-accent), var(--color-accent2), #38bdf8, var(--color-accent));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 8s linear infinite;
+}
+@keyframes shimmer { to { background-position: 300% 0; } }
+
+.ai-pulse { animation: ai-pulse 2.4s ease-in-out infinite; }
+@keyframes ai-pulse { 50% { fill: var(--color-accent); } }
+
+/* ---------- Logo ---------- */
+.logo-mark {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent2));
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.logo:hover .logo-mark { transform: rotate(-8deg) scale(1.06); }
+
+.fade-up { animation: fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(18px); } }
+
+/* ---------- Language meters (segments light up one by one) ---------- */
+.meter-seg {
+  background: var(--color-border);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  transition-delay: calc(var(--i) * 120ms + 200ms);
+}
+.is-visible .meter-seg.on {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent2));
+  box-shadow: 0 0 10px -2px var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-reveal] { opacity: 1; transform: none; }
+  .meter-seg.on { background: var(--color-accent); }
+}
